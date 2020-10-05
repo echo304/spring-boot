@@ -1,0 +1,5 @@
+rootProject.name = 'multi-board'
+
+include 'core'
+include 'web-app'
+include 'admin-app'
