@@ -27,7 +27,7 @@ test {
 }
 
 flyway {
-	url = "jdbc:mysql://localhost:3307/multi_board?serverTimezone=UTC&characterEncoding=UTF-8"
+	url = "jdbc:mysql://localhost:3307/multi_board?serverTimezone=UTC&characterEncoding=UTF-8&transformedBitIsBoolean=true"
 	user = "root"
 	encoding = 'UTF-8'
 	outOfOrder = true
