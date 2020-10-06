@@ -49,8 +49,9 @@ public class Account extends BaseTimeEntity {
     public void addRole(Role role) {
         this.roles.add(role);
     }
+    public void removeRole(Role role) { this.roles.remove(role); }
 
     public boolean isAdmin() {
-        return this.roles.stream().anyMatch(role -> role.getName() == "ADMIN");
+        return this.roles.stream().anyMatch(role -> role.getName().equals("ADMIN"));
     }
 }

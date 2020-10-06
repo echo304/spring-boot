@@ -66,6 +66,14 @@ public class AccountService implements UserDetailsService {
             account.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
 
+        Role role = roleRepository.findByName("ADMIN").orElseThrow();
+        if (dto.isAdmin() && !account.isAdmin()) {
+            account.addRole(role);
+        }
+        if (!dto.isAdmin() && account.isAdmin()) {
+            account.removeRole(role);
+        }
+
         accountRepository.save(account);
     }
 
