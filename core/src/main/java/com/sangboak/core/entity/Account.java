@@ -1,9 +1,6 @@
 package com.sangboak.core.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -22,12 +19,14 @@ public class Account extends BaseTimeEntity {
     @GeneratedValue
     private Long id;
 
+    @Setter
     @Column(nullable = false, length=50)
     private String name;
 
     @Column(nullable = false, unique = true, length=50)
     private String email;
 
+    @Setter
     @Column(nullable = false, length=200)
     private String password;
 
@@ -49,5 +48,9 @@ public class Account extends BaseTimeEntity {
 
     public void addRole(Role role) {
         this.roles.add(role);
+    }
+
+    public boolean isAdmin() {
+        return this.roles.stream().anyMatch(role -> role.getName() == "ADMIN");
     }
 }

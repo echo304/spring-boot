@@ -9,6 +9,7 @@
     <link rel="stylesheet" th:href="@{/css/lib/bootstrap.min.css}">
     <!-- <link rel="stylesheet" href="/css/common/side-nav.css"> -->
     <link rel="stylesheet" th:href="@{/css/layout/default.css}">
+    <script th:src="@{/js/lib/jquery.min.js}"></script>
 </head>
 <body>
 
@@ -17,7 +18,7 @@
     <div th:insert="common/user-control.html" id="header"></div>
     <th:block layout:fragment="content"></th:block>
 </div>
-<script th:src="@{/js/lib/jquery.min.js}"></script>
 <script th:src="@{/js/lib/bootstrap.min.js}"></script>
+<th:block layout:fragment="script"></th:block>
 </body>
 </html>
