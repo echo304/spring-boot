@@ -1,8 +1,10 @@
 package com.sangboak.adminapp.service;
 
 import com.sangboak.adminapp.config.CustomSecurityUser;
-import com.sangboak.adminapp.dto.AccountCreateRequestDto;
+import com.sangboak.adminapp.dto.AccountDto;
 import com.sangboak.adminapp.dto.AccountListResponseDto;
+import com.sangboak.adminapp.dto.AccountSaveRequestDto;
+import com.sangboak.adminapp.dto.AccountUpdateRequestDto;
 import com.sangboak.core.entity.Account;
 import com.sangboak.core.entity.Role;
 import com.sangboak.core.repository.AccountRepository;
@@ -32,7 +34,7 @@ public class AccountService implements UserDetailsService {
     }
 
     @Transactional
-    public void createAccount(AccountCreateRequestDto dto) {
+    public void saveAccount(AccountSaveRequestDto dto) {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
@@ -55,6 +57,19 @@ public class AccountService implements UserDetailsService {
     }
 
     @Transactional
+    public void saveAccount(Long id, AccountUpdateRequestDto dto) {
+        Account account = accountRepository.findById(id).orElseThrow();
+
+        account.setName(dto.getName());
+        if (dto.isResetPassword()) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            account.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+
+        accountRepository.save(account);
+    }
+
+    @Transactional
     public List<AccountListResponseDto> getAll() {
         return accountRepository.findAll()
                 .stream()
@@ -62,8 +77,19 @@ public class AccountService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
-
+    @Transactional
     public void deleteAccount(Long id) {
         accountRepository.deleteById(id);
+    }
+
+    @Transactional
+    public AccountDto findById(Long id) throws Exception {
+        Account account = accountRepository.findById(id).orElseThrow();
+        return AccountDto.builder()
+                .name(account.getName())
+                .email(account.getEmail())
+                .admin(account.isAdmin())
+                .deleted(account.isDeleted())
+                .build();
     }
 }
