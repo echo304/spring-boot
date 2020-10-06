@@ -1,3 +1,13 @@
+buildscript {
+	dependencies {
+		classpath 'mysql:mysql-connector-java:8.0.21'
+	}
+}
+
+plugins {
+	id "org.flywaydb.flyway" version "7.0.0"
+}
+
 bootJar {
 	enabled = false
 }
@@ -9,9 +19,19 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
 	compile 'org.springframework.boot:spring-boot-starter-validation'
 	compile 'org.jsoup:jsoup:1.13.1'
-	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly 'mysql:mysql-connector-java:8.0.21'
 }
 
 test {
 	useJUnitPlatform()
+}
+
+flyway {
+	url = "jdbc:mysql://localhost:3307/multi_board?serverTimezone=UTC&characterEncoding=UTF-8"
+	user = "root"
+	encoding = 'UTF-8'
+	outOfOrder = true
+	validateOnMigrate = true
+	baselineOnMigrate = true
+	baselineVersion = 0
 }
