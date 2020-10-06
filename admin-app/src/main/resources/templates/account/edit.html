@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default">
+<th:block layout:fragment="content">
+    <h1>유저 수정</h1>
+    <hr>
+
+    <form th:action="@{'/accounts/' + ${id}}" method="post">
+        <input type="hidden" name="_method" value="put"/>
+        <div>
+            <input type="text" name="name" placeholder="이름을 입력해주세요" th:value="${accountDto.name}">
+            <span th:text="${name}"></span>
+        </div>
+        <div>
+            <input class="password-input hide" type="password" name="password" placeholder="비밀번호" disabled>
+            <span th:text="${password}"></span>
+            <div class="form-check">
+                <input class="form-check-input password-reset" type="checkbox" name="resetPassword">
+                <label class="form-check-label">
+                    비밀번호 리셋
+                </label>
+            </div>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" th:field="${accountDto.admin}">
+            <label class="form-check-label">
+                관리자 계정
+            </label>
+        </div>
+
+        <button type="submit">수정하기</button>
+    </form>
+</th:block>
+<th:block layout:fragment="script">
+    <script>
+        $(document).ready(function() {
+
+            // var resetPasswordEl = $('.password-reset');
+
+            $('.password-reset').change(function(evt) {
+                console.log(evt.target.checked);
+                var passwordEl = $('.password-input');
+
+                if (evt.target.checked) {
+                    passwordEl.attr('disabled', false);
+                } else {
+                    passwordEl.attr('disabled', true);
+                }
+            })
+
+        })
+    </script>
+</th:block>
+</html>
