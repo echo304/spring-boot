@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default">
+<th:block layout:fragment="content">
+    <h1>유저 생성</h1>
+    <hr>
+
+    <form th:action="@{/accounts/create}" method="post">
+        <div>
+            <input type="email" name="email" placeholder="이메일 입력해주세요" th:value="${accountDto.email}">
+            <span th:text="${email}"></span>
+        </div>
+        <div>
+            <input type="text" name="name" placeholder="이름을 입력해주세요" th:value="${accountDto.name}">
+            <span th:text="${name}"></span>
+        </div>
+        <div>
+            <input type="password" name="password" placeholder="비밀번호" >
+            <span th:text="${password}"></span>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" th:value="${accountDto.admin}">
+            <label class="form-check-label">
+                관리자 계정
+            </label>
+        </div>
+
+        <button type="submit">생성하기</button>
+    </form>
+</th:block>
+</html>

@@ -6,17 +6,18 @@
 <head>
     <title>어드민 </title>
     <!-- 공통 css, js, meta tag -->
-    <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/lib/bootstrap.min.css}">
     <!-- <link rel="stylesheet" href="/css/common/side-nav.css"> -->
-    <link rel="stylesheet" href="/css/layout/default.css">
+    <link rel="stylesheet" th:href="@{/css/layout/default.css}">
 </head>
 <body>
 
 <!-- page content body 구성 -->
 <div class="main">
+    <div th:insert="common/user-control.html" id="header"></div>
     <th:block layout:fragment="content"></th:block>
 </div>
-<script src="/js/lib/jquery.min.js"></script>
-<script src="/js/lib/bootstrap.min.js"></script>
+<script th:src="@{/js/lib/jquery.min.js}"></script>
+<script th:src="@{/js/lib/bootstrap.min.js}"></script>
 </body>
 </html>
