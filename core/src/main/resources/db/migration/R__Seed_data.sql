@@ -8,3 +8,6 @@ VALUES
 
 INSERT INTO account_role_assignments (account_id, role_id)
 VALUES(1, 1), (1, 2), (2, 2);
+
+INSERT INTO boards (name, description)
+VALUES ('Board 1', 'First board'), ('Board 2', 'Second board');
