@@ -25,7 +25,16 @@
             </td>
             <td><span th:text="${account.name}"></span></td>
             <td><span th:text="${account.createdDate}"></span></td>
-            <td><span th:text="${account.deleted}"></span></td>
+            <td>
+                <span th:text="${account.deleted}"></span>
+                <form th:action="@{'/accounts/' + ${account.id}}" method="post">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <input  id="id" type="hidden" name="id" th:value="${account.id}"/>
+                    <div>
+                        <input id="delete-btn" type="submit" value="삭제">
+                    </div>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

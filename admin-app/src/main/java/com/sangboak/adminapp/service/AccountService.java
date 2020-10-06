@@ -63,7 +63,6 @@ public class AccountService implements UserDetailsService {
     }
 
 
-    @Transactional
     public void deleteAccount(Long id) {
         accountRepository.deleteById(id);
     }

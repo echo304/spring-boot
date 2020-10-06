@@ -24,13 +24,13 @@ public class AccountCreateRequestDto {
 //    	message = "비밀번호는 영문 대,소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함된 8자 ~ 20자의 비밀번호여야 합니다.")
     private String password;
 
-    private boolean isAdmin;
+    private boolean admin;
 
     @Builder
-    public AccountCreateRequestDto(String email, String name, String password, boolean isAdmin) {
+    public AccountCreateRequestDto(String email, String name, String password, boolean admin) {
         this.email = email;
         this.name = name;
         this.password = password;
-        this.isAdmin = isAdmin;
+        this.admin = admin;
     }
 }

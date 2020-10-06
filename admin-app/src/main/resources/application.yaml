@@ -10,3 +10,11 @@ spring:
     prefix: classpath:templates/
     check-template-location: true
     cache: false
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+logging:
+  level:
+    web: DEBUG
