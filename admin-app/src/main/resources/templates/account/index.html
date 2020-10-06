@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default">
+<th:block layout:fragment="content">
+
+    <a th:href="@{/accounts/create}">유저 생성</a>
+    <table class="table table-horizontal table-bordered">
+        <thead class="thead-strong">
+        <tr>
+            <th>유저 아이디</th>
+            <th>이름</th>
+            <th>이메일</th>
+            <th>유저 생성일</th>
+            <th>삭제 여부(숨김)</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        <tr th:each="account: ${accounts}">
+            <td><span th:text="${account.id}"></span></td>
+            <td>
+                <a th:href="@{'/accounts/' + ${account.id} + '/edit'}">
+                    <span th:text="${account.email}"></span>
+                </a>
+            </td>
+            <td><span th:text="${account.name}"></span></td>
+            <td><span th:text="${account.createdDate}"></span></td>
+            <td><span th:text="${account.deleted}"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</th:block>

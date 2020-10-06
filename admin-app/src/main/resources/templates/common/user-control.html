@@ -1,0 +1,5 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div>
+    <a sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
+    <a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
+</div>
