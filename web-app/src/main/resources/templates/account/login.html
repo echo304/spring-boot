@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default">
+<th:block layout:fragment="content">
+    <h1>로그인</h1>
+    <hr>
+
+    <form th:action="@{/account/login}" method="post">
+        <input type="email" name="email" placeholder="이메일 입력해주세요">
+        <input type="password" name="password" placeholder="비밀번호">
+        <button type="submit">로그인</button>
+    </form>
+</th:block>
+</html>
