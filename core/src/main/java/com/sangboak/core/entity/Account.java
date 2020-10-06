@@ -38,12 +38,16 @@ public class Account extends BaseTimeEntity {
     @JoinTable(name = "account_role_assignments",
             joinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
-    private Set<Role> roles = new HashSet<Role>();
+    private Set<Role> roles = new HashSet<>();
 
     @Builder
     public Account(String email, String name, String password) {
         this.email = email;
         this.name = name;
         this.password = password;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 }

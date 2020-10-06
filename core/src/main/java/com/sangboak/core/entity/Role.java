@@ -1,8 +1,6 @@
 package com.sangboak.core.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,4 +18,8 @@ public class Role extends BaseTimeEntity {
 
     @NotNull
     private String name;
+
+    public Role(String name) {
+        this.name = name;
+    }
 }
