@@ -1,7 +1,7 @@
 package com.sangboak.webapp.config;
 
 import com.sangboak.core.entity.Account;
-import com.sangboak.core.entity.AccountRoleAssignment;
+import com.sangboak.core.entity.Role;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,10 +23,10 @@ public class CustomSecurityUser extends User {
         this.account = account;
     }
 
-    private static List<GrantedAuthority> makeGrantedAuth(Set<AccountRoleAssignment> accountRoles) {
+    private static List<GrantedAuthority> makeGrantedAuth(Set<Role> roles) {
         List<GrantedAuthority> list = new ArrayList<>();
-        accountRoles.forEach(
-                accountRole -> list.add(new SimpleGrantedAuthority(ROLE_PREFIX + accountRole.getRole().getName()))
+        roles.forEach(
+                role -> list.add(new SimpleGrantedAuthority(ROLE_PREFIX + role.getName()))
         );
         return list;
     }
