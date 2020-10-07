@@ -11,6 +11,7 @@
             <th>아이디</th>
             <th>이름</th>
             <th>설명</th>
+            <th>게시글 수</th>
             <th>삭제 여부(숨김)</th>
         </tr>
         </thead>
@@ -23,6 +24,12 @@
                 </a>
             </td>
             <td><span th:text="${board.description}"></span></td>
+            <td>
+                <span th:text="${board.totalPostCount}"></span>
+                <a th:href="@{'/boards/' + ${board.id}}">
+                    <span>게시글 목록으로</span>
+                </a>
+            </td>
             <td>
                 <span th:text="${board.deleted}"></span>
                 <form th:action="@{'/boards/' + ${board.id}}" method="post">

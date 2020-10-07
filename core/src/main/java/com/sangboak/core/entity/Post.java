@@ -28,11 +28,11 @@ public class Post extends BaseTimeEntity {
     private String content;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "author_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Account author;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "board_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Board board;
 
     @Column(columnDefinition = "boolean default false")
