@@ -3,6 +3,7 @@ package com.sangboak.webapp.config;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -32,19 +33,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/**").permitAll() // Temporary
-                    .and()
+                .antMatchers("/boards/{\\d+}/post/{\\d+}/edit").authenticated()
+                .antMatchers("/boards/{\\d+}/post/create").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/boards/{\\d+}/post/{\\d+}").authenticated()
+                .antMatchers(HttpMethod.PUT, "/boards/{\\d+}/post/{\\d+}").authenticated()
+                .antMatchers(HttpMethod.POST, "/boards/{\\d+}/posts").authenticated()
+                .antMatchers("/**").permitAll()
+                .and()
                 .formLogin()
                 .loginPage("/account/login")
                 .usernameParameter("email")
                 .defaultSuccessUrl("/account/login/result")
                 .permitAll()
-                    .and()
+                .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/account/logout"))
                 .logoutSuccessUrl("/account/logout/result")
                 .invalidateHttpSession(true)
-                    .and()
+                .and()
                 .exceptionHandling()
                 .accessDeniedPage("/denied");
     }
