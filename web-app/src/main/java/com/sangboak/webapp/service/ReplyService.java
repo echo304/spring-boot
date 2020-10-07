@@ -22,7 +22,7 @@ public class ReplyService {
     final private AccountRepository accountRepository;
     final private PostRepository postRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ReplyResponseDto> getRepliesByPostId(Long postId) {
         return replyRepository.findByPostId(postId)
                 .stream()
@@ -40,5 +40,18 @@ public class ReplyService {
                 .content(dto.getContent())
                 .build();
         return new ReplyResponseDto(replyRepository.save(reply));
+    }
+
+    @Transactional
+    public ReplyResponseDto updateReply(Long id, ReplySaveRequestDto dto) {
+        Reply reply = replyRepository.findById(id).orElseThrow();
+        reply.setContent(dto.getContent());
+
+        return new ReplyResponseDto(replyRepository.save(reply));
+    }
+
+    @Transactional
+    public void deleteReply(Long id) {
+        replyRepository.deleteById(id);
     }
 }

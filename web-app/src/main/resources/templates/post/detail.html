@@ -34,11 +34,21 @@
     <div class="container">
         <ul th:each="reply: ${replies}">
             <li class="row">
+                <span class="d-none reply_id" th:data-id="${reply.id}"></span>
                 <span class="col-2" th:text="${reply.authorEmail}"></span>
-                <span class="col-7" th:text="${reply.content}"></span>
+                <span class="col-7 reply_display" th:text="${reply.content}"></span>
+                <span class="col-7 reply_modify_input d-none">
+                    <div class="row">
+                        <input type="text" class="form-control col-9 reply_value" th:value="${reply.content}">
+                        <button class="btn btn-primary reply_modify_submit">변경</button>
+                    </div>
+                </span>
                 <span class="col-2" th:text="${reply.modifiedDate}"></span>
                 <span class="col-1">
-                    수정
+                    <span th:if="${#authentication.name == reply.authorEmail}" >
+                        <button class="btn btn-primary reply_modify_button">수정</button>
+                        <button class="btn btn-warning reply_delete_button" th:data-id="${reply.id}">삭제</button>
+                    </span>
                 </span>
             </li>
         </ul>
@@ -48,30 +58,74 @@
     <script th:inline="javascript">
         $(document).ready(function() {
 
-            // var resetPasswordEl = $('.password-reset');
             var postId = /*[[${postDto.id}]]*/;
-            var apiUrl = /*[[@{'/posts/' + ${postDto.id} + '/replies/'}]]*/;
-            //
-            // $('.reply_sumbit').click(function(evt) {
-            //     var replyInputEl = $('.reply_input');
-            //     var replyContent = replyInputEl.val();
-            //
-            //     console.log('postId', postId, apiUrl);
-            //
-            //     $.ajax({
-            //         method: "POST",
-            //         url: apiUrl,
-            //         data: { content: replyContent },
-            //         xhrFields: {
-            //             withCredentials: true
-            //         }
-            //     }).done(function() {
-            //         alert( "success" );
-            //     })
-            //     .fail(function() {
-            //         alert( "error" );
-            //     });
-            // });
+            var apiUrl = /*[[@{'/boards/' + ${boardId} + '/posts/' + ${postDto.id} + '/replies'}]]*/;
+            var _csrfParameterName = /*[[${_csrf.parameterName}]]*/;
+            var _csrfToken = /*[[${_csrf.token}]]*/;
+
+            $('.reply_modify_submit').click(function(evt) {
+                var commonAncestor = $(this).closest('li.row');
+                var replyDisplyEl = commonAncestor.find('.reply_display');
+                var replyModifyEl = commonAncestor.find('.reply_modify_input');
+                var replyModifyBtn = commonAncestor.find('.reply_modify_button');
+                var replyContent = commonAncestor.find('.reply_value').val();
+                var replyId = commonAncestor.find('.reply_id').data('id');
+
+                var replyData = {
+                    content: replyContent,
+                };
+                replyData[_csrfParameterName] = _csrfToken;
+
+                console.log(replyData);
+                $.ajax({
+                    method: "PUT",
+                    url: apiUrl + "/" + replyId,
+                    data: replyData,
+                    xhrFields: {
+                        withCredentials: true
+                    }
+                }).done(function() {
+                    replyDisplyEl.text(replyContent);
+                    replyModifyBtn.toggleClass("d-none");
+                    replyDisplyEl.toggleClass("d-none");
+                    replyModifyEl.toggleClass("d-none");
+                })
+                .fail(function() {
+                    alert( "삭제에 실패했습니다." );
+                });
+            })
+
+            $('.reply_modify_button').click(function(evt) {
+                var commonAncestor = $(this).closest('li.row');
+
+                var replyDisplyEl = commonAncestor.find('.reply_display');
+                var replyModifyEl = commonAncestor.find('.reply_modify_input');
+
+                replyDisplyEl.toggleClass("d-none");
+                replyModifyEl.toggleClass("d-none");
+                $(this).toggleClass("d-none");
+            });
+
+            $('.reply_delete_button').click(function(evt) {
+                var commonAncestor = $(this).closest('li.row');
+                var replyId = $(this).data('id');
+                var replyData = {};
+                replyData[_csrfParameterName] = _csrfToken;
+                console.log(replyData);
+                $.ajax({
+                    method: "DELETE",
+                    url: apiUrl + "/" + replyId,
+                    data: replyData,
+                    xhrFields: {
+                        withCredentials: true
+                    }
+                }).done(function() {
+                    commonAncestor.remove();
+                })
+                .fail(function() {
+                    alert( "삭제에 실패했습니다." );
+                });
+            })
         })
     </script>
 </th:block>

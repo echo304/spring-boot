@@ -1,15 +1,14 @@
 package com.sangboak.webapp.controller;
 
 import com.sangboak.webapp.config.CustomSecurityUser;
+import com.sangboak.webapp.dto.ReplyResponseDto;
 import com.sangboak.webapp.dto.ReplySaveRequestDto;
 import com.sangboak.webapp.service.ReplyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -31,5 +30,20 @@ public class ReplyController {
         dto.setPostId(postId);
         replyService.saveReplyOf(authUser.getAccount().getId(), dto);
         return String.format("redirect:/boards/%s/posts/%s", boardId, postId);
+    }
+
+    @ResponseBody
+    @PutMapping("/{id}")
+    public ReplyResponseDto updateReply(
+            @PathVariable("id") Long id,
+            @Valid ReplySaveRequestDto dto
+    ) {
+        return replyService.updateReply(id, dto);
+    }
+
+    @ResponseBody
+    @DeleteMapping("/{id}")
+    public void deleteReply(@PathVariable("id") Long id) {
+        replyService.deleteReply(id);
     }
 }
