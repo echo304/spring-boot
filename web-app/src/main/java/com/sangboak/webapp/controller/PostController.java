@@ -152,4 +152,13 @@ public class PostController {
 
         return String.format("redirect:/boards/%s/posts/%s", boardId, id);
     }
+
+    @DeleteMapping("/{id}")
+    public String delete(
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("id") Long id
+    ) {
+        postService.deletePost(id);
+        return String.format("redirect:/boards/%s/posts", boardId);
+    }
 }
