@@ -11,8 +11,6 @@ import com.sangboak.webapp.dto.PostDetailResponseDto;
 import com.sangboak.webapp.dto.PostListResponseDto;
 import com.sangboak.webapp.dto.PostSaveRequestDto;
 import lombok.AllArgsConstructor;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,13 +59,19 @@ public class PostService {
 
         return postRepository.save(Post.builder()
                 .title(dto.getTitle())
-                .content(sanitizeContent(dto.getContent()))
+                .content(dto.getContent())
                 .author(account)
                 .board(board)
                 .build()).getId();
     }
 
-    private String sanitizeContent(String content) {
-        return Jsoup.clean(content, Whitelist.basic());
+    @Transactional
+    public Long savePost(Long id, PostSaveRequestDto dto) throws Exception {
+        Post post = postRepository.findById(id).orElseThrow();
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
+
+        return postRepository.save(post).getId();
     }
+
 }

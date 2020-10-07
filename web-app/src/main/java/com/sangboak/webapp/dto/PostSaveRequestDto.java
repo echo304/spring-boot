@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -29,5 +31,9 @@ public class PostSaveRequestDto {
         this.title = title;
         this.content = content;
         this.authorEmail = authorEmail;
+    }
+
+    public String getContent() {
+        return Jsoup.clean(content, Whitelist.basic());
     }
 }
