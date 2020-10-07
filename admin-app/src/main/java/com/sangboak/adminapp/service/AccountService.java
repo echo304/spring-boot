@@ -77,7 +77,7 @@ public class AccountService implements UserDetailsService {
         accountRepository.save(account);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<AccountListResponseDto> getAll() {
         return accountRepository.findAll()
                 .stream()
@@ -90,7 +90,7 @@ public class AccountService implements UserDetailsService {
         accountRepository.deleteById(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public AccountDto findById(Long id) throws Exception {
         Account account = accountRepository.findById(id).orElseThrow();
         return AccountDto.builder()

@@ -33,10 +33,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/boards/{\\d+}/post/{\\d+}/edit").authenticated()
-                .antMatchers("/boards/{\\d+}/post/create").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/boards/{\\d+}/post/{\\d+}").authenticated()
-                .antMatchers(HttpMethod.PUT, "/boards/{\\d+}/post/{\\d+}").authenticated()
+                .antMatchers("/boards/{\\d+}/posts/{\\d+}/edit").authenticated()
+                .antMatchers("/boards/{\\d+}/posts/create").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/boards/{\\d+}/posts/{\\d+}").authenticated()
+                .antMatchers(HttpMethod.PUT, "/boards/{\\d+}/posts/{\\d+}").authenticated()
                 .antMatchers(HttpMethod.POST, "/boards/{\\d+}/posts").authenticated()
                 .antMatchers("/**").permitAll()
                 .and()

@@ -17,14 +17,14 @@ public class PostService {
 
     final private PostRepository postRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<PostListResponseDto> getPostsByBoardId(Long id) {
         return postRepository.findByBoardId(id).stream()
                 .map(PostListResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PostDto getPost(Long id) throws Exception {
         Post post = postRepository.findById(id).orElseThrow();
         return new PostDto(post);

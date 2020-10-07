@@ -16,7 +16,7 @@
         <tbody id="tbody">
         <tr th:each="board: ${boards}">
             <td>
-                <a th:href="@{'/boards/' + ${board.id} + '/edit'}">
+                <a th:href="@{'/boards/' + ${board.id} + '/posts'}">
                     <span th:text="${board.name}"></span>
                 </a>
             </td>

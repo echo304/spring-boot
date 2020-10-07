@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default">
+<th:block layout:fragment="content">
+    <h2 th:text="${postDto.title}"></h2>
+    <p th:inline="text">작성자 : [[${postDto.authorEmail}]]</p>
+    <p th:inline="text">작성일 : [[${postDto.modifiedDate}]]</p>
+
+    <p th:utext="${postDto.content}"></p>
+
+    <div th:if="${#authentication.name == postDto.authorEmail}">
+        <form id="delete-form" th:action="@{'/boards/' + ${boardId} + '/posts/' + ${postDto.id}}" method="post">
+            <input type="hidden" name="_method" value="delete"/>
+            <button id="delete-btn">삭제</button>
+        </form>
+    </div>
+</th:block>
