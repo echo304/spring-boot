@@ -13,10 +13,10 @@
 </head>
 <body>
 <div class="sidenav">
-    <a th:href="@{'/accounts'}">
+    <a sec:authorize="isAuthenticated()" th:href="@{'/accounts'}">
         <span>계정 관리</span>
     </a>
-    <a th:href="@{'/boards'}">
+    <a sec:authorize="isAuthenticated()" th:href="@{'/boards'}">
         <span>게시판 관리</span>
     </a>
 </div>

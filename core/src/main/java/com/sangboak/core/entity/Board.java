@@ -35,7 +35,7 @@ public class Board {
     private boolean deleted;
 
 //    @Basic(fetch=FetchType.LAZY)
-    @Formula("(select count(*) from posts ps where ps.board_id = id)")
+    @Formula("(select count(*) from posts ps where ps.deleted = false and ps.board_id = id)")
     private int totalPostCount;
 
     @Builder

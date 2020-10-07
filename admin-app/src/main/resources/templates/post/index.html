@@ -15,7 +15,7 @@
         <tr th:each="post: ${posts}">
             <td><span th:text="${post.id}"></span></td>
             <td>
-                <a th:href="@{'/boards/' + ${boardId} + '/posts/' + ${post.id} + '/edit'}">
+                <a th:href="@{'/boards/' + ${boardId} + '/posts/' + ${post.id}}">
                     <span th:text="${post.title}"></span>
                 </a>
             </td>
