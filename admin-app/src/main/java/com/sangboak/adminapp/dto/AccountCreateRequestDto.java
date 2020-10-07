@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Getter
 @NoArgsConstructor
-public class AccountSaveRequestDto {
+public class AccountCreateRequestDto {
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
     @Email(message = "이메일 형식에 맞지 않습니다.")
     private String email;
@@ -29,7 +29,7 @@ public class AccountSaveRequestDto {
     private boolean admin;
 
     @Builder
-    public AccountSaveRequestDto(
+    public AccountCreateRequestDto(
             String email,
             String name,
             String password,

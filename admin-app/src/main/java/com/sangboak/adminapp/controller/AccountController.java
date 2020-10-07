@@ -2,7 +2,7 @@ package com.sangboak.adminapp.controller;
 
 import com.sangboak.adminapp.dto.AccountDto;
 import com.sangboak.adminapp.dto.AccountListResponseDto;
-import com.sangboak.adminapp.dto.AccountSaveRequestDto;
+import com.sangboak.adminapp.dto.AccountCreateRequestDto;
 import com.sangboak.adminapp.dto.AccountUpdateRequestDto;
 import com.sangboak.adminapp.service.AccountService;
 import lombok.AllArgsConstructor;
@@ -32,14 +32,14 @@ public class AccountController {
     }
 
     @GetMapping("/create")
-    public String createPage(@ModelAttribute("accountDto") AccountSaveRequestDto dto) {
+    public String createPage(@ModelAttribute("accountDto") AccountCreateRequestDto dto) {
         return "account/create";
     }
 
     @PostMapping("/create")
     public String create(
             Model model,
-            @Valid AccountSaveRequestDto dto,
+            @Valid AccountCreateRequestDto dto,
             Errors errors
     ) {
         if (errors.hasErrors()) {

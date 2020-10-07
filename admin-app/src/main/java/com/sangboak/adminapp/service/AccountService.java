@@ -3,7 +3,7 @@ package com.sangboak.adminapp.service;
 import com.sangboak.adminapp.config.CustomSecurityUser;
 import com.sangboak.adminapp.dto.AccountDto;
 import com.sangboak.adminapp.dto.AccountListResponseDto;
-import com.sangboak.adminapp.dto.AccountSaveRequestDto;
+import com.sangboak.adminapp.dto.AccountCreateRequestDto;
 import com.sangboak.adminapp.dto.AccountUpdateRequestDto;
 import com.sangboak.core.entity.Account;
 import com.sangboak.core.entity.Role;
@@ -34,7 +34,7 @@ public class AccountService implements UserDetailsService {
     }
 
     @Transactional
-    public void saveAccount(AccountSaveRequestDto dto) {
+    public void saveAccount(AccountCreateRequestDto dto) {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
