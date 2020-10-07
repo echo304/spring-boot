@@ -5,31 +5,46 @@
 <th:block layout:fragment="content">
     <h1>메인 페이지</h1>
     <hr>
-<!--    <ul th:each="board: ${boards}">-->
-<!--        <li>-->
-<!--            <a th:href="@{'/boards/' + ${board.id} + '/posts'}">-->
-<!--                <span th:text="${board.name}"></span>-->
-<!--            </a>-->
-<!--        </li>-->
-<!--    </ul>-->
-<!--    <table class="table table-horizontal table-bordered">-->
-<!--        <thead class="thead-strong">-->
-<!--        <tr>-->
-<!--            <th>게시글번호</th>-->
-<!--            <th>제목</th>-->
-<!--            <th>작성자</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody id="tbody">-->
-<!--        <tr th:each="story: ${stories}">-->
-<!--            <td><span th:text="${story.id}"></span></td>-->
-<!--            <td>-->
-<!--                <a th:href="${story.url}" target="_blank" rel="noopener noreferrer">-->
-<!--                    <span th:text="${story.title}"></span>-->
-<!--                </a>-->
-<!--            </td>-->
-<!--            <td><span th:text="${story.by}"></span></td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
+    <h2>게시판 목록</h2>
+    <table class="table table-horizontal table-bordered">
+        <thead class="thead-strong">
+        <tr>
+            <th>이름</th>
+            <th>설명</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        <tr th:each="board: ${boards}">
+            <td>
+                <a th:href="@{'/boards/' + ${board.id} + '/edit'}">
+                    <span th:text="${board.name}"></span>
+                </a>
+            </td>
+            <td><span th:text="${board.description}"></span></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <h2>해커뉴스 최신글 10개</h2>
+    <table class="table table-horizontal table-bordered">
+        <thead class="thead-strong">
+        <tr>
+            <th>게시글번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        <tr th:each="story: ${stories}">
+            <td><span th:text="${story.id}"></span></td>
+            <td>
+                <a th:href="${story.url}" target="_blank" rel="noopener noreferrer">
+                    <span th:text="${story.title}"></span>
+                </a>
+            </td>
+            <td><span th:text="${story.by}"></span></td>
+        </tr>
+        </tbody>
+    </table>
 </th:block>

@@ -1,5 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div>
+    <a th:href="@{/}">홈으로</a>
     <a sec:authorize="isAnonymous()" th:href="@{/account/login}">로그인</a>
     <a sec:authorize="isAuthenticated()" th:href="@{/account/logout}">로그아웃</a>
     <a sec:authorize="isAnonymous()" th:href="@{/account/signup}">회원가입</a>
