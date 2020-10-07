@@ -1,9 +1,6 @@
 package com.sangboak.core.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -20,6 +17,7 @@ public class Reply extends BaseTimeEntity {
     @GeneratedValue
     private Long id;
 
+    @Setter
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 

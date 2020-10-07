@@ -28,7 +28,7 @@ public class Board {
     @Column(length = 500, nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "board", orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Post> posts = new HashSet<Post>();
 
     @Column(columnDefinition = "boolean default false")

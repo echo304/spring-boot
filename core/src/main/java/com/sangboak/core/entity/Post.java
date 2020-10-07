@@ -9,6 +9,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -34,6 +36,9 @@ public class Post extends BaseTimeEntity {
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private Board board;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Reply> replies = new HashSet<Reply>();
 
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
