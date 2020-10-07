@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default">
+<th:block layout:fragment="content">
+    <table class="table table-horizontal table-bordered">
+        <thead class="thead-strong">
+        <tr>
+            <th>아이디</th>
+            <th>제목</th>
+            <th>작성자 이메일</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        <tr th:each="post: ${posts}">
+            <td><span th:text="${post.id}"></span></td>
+            <td>
+                <a th:href="@{'/boards/' + ${boardId} + '/posts/' + ${post.id} + '/edit'}">
+                    <span th:text="${post.title}"></span>
+                </a>
+            </td>
+            <td>
+                <a th:href="@{'/accounts/' + ${post.authorId} + '/edit'}">
+                    <span th:text="${post.authorEmail}"></span>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</th:block>
