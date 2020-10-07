@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default">
+<th:block layout:fragment="content">
+
+    <a th:href="@{/boards/create}">게시판 생성</a>
+    <table class="table table-horizontal table-bordered">
+        <thead class="thead-strong">
+        <tr>
+            <th>아이디</th>
+            <th>이름</th>
+            <th>설명</th>
+            <th>삭제 여부(숨김)</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        <tr th:each="board: ${boards}">
+            <td><span th:text="${board.id}"></span></td>
+            <td>
+                <a th:href="@{'/boards/' + ${board.id} + '/edit'}">
+                    <span th:text="${board.name}"></span>
+                </a>
+            </td>
+            <td><span th:text="${board.description}"></span></td>
+            <td>
+                <span th:text="${board.deleted}"></span>
+                <form th:action="@{'/boards/' + ${board.id}}" method="post">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <input  id="id" type="hidden" name="id" th:value="${board.id}"/>
+                    <div>
+                        <input id="delete-btn" type="submit" value="삭제">
+                    </div>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</th:block>

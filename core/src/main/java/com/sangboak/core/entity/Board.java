@@ -1,9 +1,6 @@
 package com.sangboak.core.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -20,9 +17,11 @@ public class Board {
     @GeneratedValue
     private Long id;
 
+    @Setter
     @Column(length = 100, nullable = false)
     private String name;
 
+    @Setter
     @Column(length = 500, nullable = false)
     private String description;
 
