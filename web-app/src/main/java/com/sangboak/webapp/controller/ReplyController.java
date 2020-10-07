@@ -3,6 +3,7 @@ package com.sangboak.webapp.controller;
 import com.sangboak.webapp.config.CustomSecurityUser;
 import com.sangboak.webapp.dto.ReplyResponseDto;
 import com.sangboak.webapp.dto.ReplySaveRequestDto;
+import com.sangboak.webapp.service.MailService;
 import com.sangboak.webapp.service.ReplyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
@@ -19,6 +20,7 @@ import javax.validation.Valid;
 public class ReplyController {
 
     final private ReplyService replyService;
+    final private MailService mailService;
 
     @PostMapping
     public String createReply(
@@ -28,7 +30,9 @@ public class ReplyController {
             @AuthenticationPrincipal CustomSecurityUser authUser
     ) {
         dto.setPostId(postId);
-        replyService.saveReplyOf(authUser.getAccount().getId(), dto);
+        Long authUserId = authUser.getAccount().getId();
+        replyService.saveReplyOf(authUserId, dto);
+        mailService.sendReplyNotiMail(authUserId, postId);
         return String.format("redirect:/boards/%s/posts/%s", boardId, postId);
     }
 

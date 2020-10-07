@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaAuditing
 @SpringBootApplication
-@PropertySource(value = "classpath:/data-access.properties")
+@PropertySource(value = {"classpath:/data-access.properties", "classpath:/mail-setting-credentials.properties"})
 @EntityScan("com.sangboak.*")
 @EnableJpaRepositories("com.sangboak.*")
 public class WebAppApplication {

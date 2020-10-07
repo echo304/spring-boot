@@ -34,6 +34,9 @@ public class Account extends BaseTimeEntity {
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Post> posts = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "account_role_assignments",
             joinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")},

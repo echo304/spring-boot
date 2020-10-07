@@ -4,6 +4,8 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+**/mail-setting-credentials.properties
+
 ### STS ###
 .apt_generated
 .classpath
