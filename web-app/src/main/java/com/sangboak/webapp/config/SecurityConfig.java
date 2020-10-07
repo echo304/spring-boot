@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/boards/{\\d+}/posts/{\\d+}").authenticated()
                 .antMatchers(HttpMethod.PUT, "/boards/{\\d+}/posts/{\\d+}").authenticated()
                 .antMatchers(HttpMethod.POST, "/boards/{\\d+}/posts").authenticated()
+                .antMatchers(HttpMethod.POST, "/posts/{\\d+}/replies").authenticated()
                 .antMatchers("/**").permitAll()
                 .and()
                 .formLogin()

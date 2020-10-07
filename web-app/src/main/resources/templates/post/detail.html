@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorator="layout/default">
 <th:block layout:fragment="content">
     <div class="container">
@@ -20,4 +20,58 @@
             <button class="btn btn-warning">삭제</button>
         </form>
     </div>
+
+    <div sec:authorize="isAuthenticated()" class="container">
+        <div class="container">
+            <form th:action="@{'/boards/' + ${boardId} + '/posts/' + ${postDto.id} + '/replies'}" method="post" class="form-group row">
+                <label class="col-1">댓글 달기</label>
+                <input type="text" class="form-control col-8" placeholder="내용을 입력하세요" name="content">
+                <button class="btn btn-primary col-2" type="submit" >등록</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <ul th:each="reply: ${replies}">
+            <li class="row">
+                <span class="col-2" th:text="${reply.authorEmail}"></span>
+                <span class="col-7" th:text="${reply.content}"></span>
+                <span class="col-2" th:text="${reply.modifiedDate}"></span>
+                <span class="col-1">
+                    수정
+                </span>
+            </li>
+        </ul>
+    </div>
+</th:block>
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        $(document).ready(function() {
+
+            // var resetPasswordEl = $('.password-reset');
+            var postId = /*[[${postDto.id}]]*/;
+            var apiUrl = /*[[@{'/posts/' + ${postDto.id} + '/replies/'}]]*/;
+            //
+            // $('.reply_sumbit').click(function(evt) {
+            //     var replyInputEl = $('.reply_input');
+            //     var replyContent = replyInputEl.val();
+            //
+            //     console.log('postId', postId, apiUrl);
+            //
+            //     $.ajax({
+            //         method: "POST",
+            //         url: apiUrl,
+            //         data: { content: replyContent },
+            //         xhrFields: {
+            //             withCredentials: true
+            //         }
+            //     }).done(function() {
+            //         alert( "success" );
+            //     })
+            //     .fail(function() {
+            //         alert( "error" );
+            //     });
+            // });
+        })
+    </script>
 </th:block>

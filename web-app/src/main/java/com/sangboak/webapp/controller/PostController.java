@@ -4,7 +4,9 @@ import com.sangboak.webapp.config.CustomSecurityUser;
 import com.sangboak.webapp.dto.PostDetailResponseDto;
 import com.sangboak.webapp.dto.PostListResponseDto;
 import com.sangboak.webapp.dto.PostSaveRequestDto;
+import com.sangboak.webapp.dto.ReplyResponseDto;
 import com.sangboak.webapp.service.PostService;
+import com.sangboak.webapp.service.ReplyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.security.core.Authentication;
@@ -24,7 +26,8 @@ import java.util.List;
 @RequestMapping("/boards/{boardId}/posts")
 public class PostController {
 
-    private PostService postService;
+    final private PostService postService;
+    final private ReplyService replyService;
 
     @GetMapping
     public String list(@PathVariable("boardId") Long boardId, Model model, Authentication authentication) {
@@ -53,6 +56,9 @@ public class PostController {
             model.addAttribute("account", authUser.getAccount());
         }
 
+        List<ReplyResponseDto> replyListResponseDto = replyService.getRepliesByPostId(id);
+
+        model.addAttribute("replies", replyListResponseDto);
         model.addAttribute("postDto", postDto);
         return "post/detail";
     }
