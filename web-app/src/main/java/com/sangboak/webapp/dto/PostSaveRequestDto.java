@@ -10,6 +10,7 @@ import org.jsoup.safety.Whitelist;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -34,6 +35,6 @@ public class PostSaveRequestDto {
     }
 
     public String getContent() {
-        return Jsoup.clean(content, Whitelist.basic());
+        return Jsoup.clean(Optional.ofNullable(content).orElse(""), Whitelist.basic());
     }
 }
