@@ -34,7 +34,6 @@ public class Board {
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
 
-//    @Basic(fetch=FetchType.LAZY)
     @Formula("(select count(*) from posts ps where ps.deleted = false and ps.board_id = id)")
     private int totalPostCount;
 

@@ -1,6 +1,7 @@
 package com.sangboak.core.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -38,6 +39,12 @@ public class Account extends BaseTimeEntity {
             joinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles = new HashSet<>();
+
+    @Formula("(select count(*) from posts ps where ps.deleted = false and ps.author_id = id)")
+    private int totalPostCount;
+
+    @Formula("(select count(*) from replies r where r.deleted = false and r.author_id = id)")
+    private int totalReplyCount;
 
     @Builder
     public Account(String email, String name, String password) {
