@@ -63,3 +63,9 @@ project(':admin-app') {
         implementation  project(':core')
     }
 }
+
+project(':board-batch') {
+    dependencies {
+        implementation  project(':core')
+    }
+}
