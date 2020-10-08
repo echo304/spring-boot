@@ -29,7 +29,6 @@ public class PostController {
     public String list(
             @PathVariable("boardId") Long boardId,
             Model model,
-//            Authentication authentication,
             @RequestParam(value="page", defaultValue = "1") Integer pageNum
     ) {
         PageResponseDto<PostListResponseDto> postList = postService.getPostsByBoardId(boardId, pageNum);

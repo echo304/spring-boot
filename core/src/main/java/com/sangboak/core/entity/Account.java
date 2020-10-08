@@ -7,6 +7,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -58,6 +59,13 @@ public class Account extends BaseTimeEntity {
         this.email = email;
         this.name = name;
         this.password = password;
+    }
+
+    public Optional<Integer> getRank() {
+        if (ranking != null) {
+            return Optional.ofNullable(ranking.getRank());
+        }
+        return Optional.empty();
     }
 
     public void addRole(Role role) {

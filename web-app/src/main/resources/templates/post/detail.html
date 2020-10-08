@@ -35,9 +35,12 @@
         <ul th:each="reply: ${replies}">
             <li class="row">
                 <span class="d-none reply_id" th:data-id="${reply.id}"></span>
-                <span class="col-2" th:text="${reply.authorEmail}"></span>
-                <span class="col-7 reply_display" th:text="${reply.content}"></span>
-                <span class="col-7 reply_modify_input d-none">
+                <span class="col-3" >
+                    <span th:text="${reply.authorEmail}"></span>
+                    <span style="color: blue" th:text="${reply.authorRank}"></span>
+                </span>
+                <span class="col-6 reply_display" th:text="${reply.content}"></span>
+                <span class="col-6 reply_modify_input d-none">
                     <div class="row">
                         <input type="text" class="form-control col-9 reply_value" th:value="${reply.content}">
                         <button class="btn btn-primary reply_modify_submit">변경</button>
