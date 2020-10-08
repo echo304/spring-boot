@@ -6,9 +6,11 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableJpaAuditing
 @SpringBootApplication
+@EnableScheduling
 @PropertySource(value = "classpath:/data-access.properties")
 @EntityScan("com.sangboak.*")
 @EnableJpaRepositories("com.sangboak.*")
