@@ -59,8 +59,8 @@ public class RankingJobConfiguration {
         String sql =
                         "SELECT DISTINCT\n" +
                         "   account.id as id,\n" +
-                        "   (SELECT COUNT(*) * 10 FROM posts ps WHERE ps.deleted = 0 AND ps.author_id = account.id) AS post_score,\n" +
-                        "   (SELECT COUNT(*) * 5 FROM replies r WHERE r.deleted = 0 AND r.author_id = account.id) AS reply_score,\n" +
+                        "   (SELECT COUNT(*) * 10 FROM posts ps WHERE Date(ps.created_date) > CURDATE() - INTERVAL 30 DAY and ps.deleted = 0 AND ps.author_id = account.id) AS post_score,\n" +
+                        "   (SELECT COUNT(*) * 5 FROM replies r WHERE Date(r.created_date) > CURDATE() - INTERVAL 30 DAY and r.deleted = 0 AND r.author_id = account.id) AS reply_score,\n" +
                         "   (SELECT post_score) + (SELECT reply_score) as score\n" +
                         "FROM accounts account\n" +
                         "   INNER JOIN posts ps_ ON ps_.author_id = account.id \n" +
