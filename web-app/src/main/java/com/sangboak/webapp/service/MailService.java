@@ -7,6 +7,7 @@ import com.sangboak.core.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +18,7 @@ public class MailService {
     final private AccountRepository accountRepository;
     final private PostRepository postRepository;
 
+    @Async
     public void sendReplyNotiMail(Long repliedAccountId, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow();
         Account account = post.getAuthor();
