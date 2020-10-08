@@ -8,7 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Entity(name = "rankings")
-public class Ranking extends BaseTimeEntity {
+public class Ranking {
 
     @Id
     private Long id;
