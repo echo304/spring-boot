@@ -49,6 +49,10 @@ public class Account extends BaseTimeEntity {
     @Formula("(select count(*) from replies r where r.deleted = false and r.author_id = id)")
     private int totalReplyCount;
 
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "id")
+    private Ranking ranking;
+
     @Builder
     public Account(String email, String name, String password) {
         this.email = email;
