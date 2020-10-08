@@ -1,15 +1,11 @@
 package com.sangboak.webapp.controller;
 
 import com.sangboak.webapp.config.CustomSecurityUser;
-import com.sangboak.webapp.dto.PostDetailResponseDto;
-import com.sangboak.webapp.dto.PostListResponseDto;
-import com.sangboak.webapp.dto.PostSaveRequestDto;
-import com.sangboak.webapp.dto.ReplyResponseDto;
+import com.sangboak.webapp.dto.*;
 import com.sangboak.webapp.service.PostService;
 import com.sangboak.webapp.service.ReplyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,10 +26,18 @@ public class PostController {
     final private ReplyService replyService;
 
     @GetMapping
-    public String list(@PathVariable("boardId") Long boardId, Model model, Authentication authentication) {
-        List<PostListResponseDto> postList = postService.getPostsByBoardId(boardId);
+    public String list(
+            @PathVariable("boardId") Long boardId,
+            Model model,
+//            Authentication authentication,
+            @RequestParam(value="page", defaultValue = "1") Integer pageNum
+    ) {
+        PageResponseDto<PostListResponseDto> postList = postService.getPostsByBoardId(boardId, pageNum);
 
-        model.addAttribute("posts", postList);
+        model.addAttribute("posts", postList.getData());
+        model.addAttribute("hasNext", postList.isHasNext());
+        model.addAttribute("hasPrevious", postList.isHasPrevious());
+        model.addAttribute("currentPage", pageNum);
         return "post/index";
     }
 

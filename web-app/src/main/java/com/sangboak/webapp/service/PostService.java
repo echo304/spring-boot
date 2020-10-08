@@ -7,10 +7,14 @@ import com.sangboak.core.entity.Post;
 import com.sangboak.core.repository.AccountRepository;
 import com.sangboak.core.repository.BoardRepository;
 import com.sangboak.core.repository.PostRepository;
+import com.sangboak.webapp.dto.PageResponseDto;
 import com.sangboak.webapp.dto.PostDetailResponseDto;
 import com.sangboak.webapp.dto.PostListResponseDto;
 import com.sangboak.webapp.dto.PostSaveRequestDto;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,17 +27,28 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
     final private static int MAXIMUM_POSTS_PER_DAY = 5;
+    final private static int POST_PER_PAGE = 3;
 
     private PostRepository postRepository;
     private BoardRepository boardRepository;
     private AccountRepository accountRepository;
 
     @Transactional(readOnly = true)
-    public List<PostListResponseDto> getPostsByBoardId(Long boardId) {
-        return postRepository.findByBoardId(boardId)
+    public PageResponseDto<PostListResponseDto> getPostsByBoardId(Long boardId, Integer pageNum) {
+        Page<Post> page = postRepository.findAll(PageRequest.of(
+                pageNum - 1, POST_PER_PAGE,
+                Sort.by(Sort.Direction.DESC, "createdDate")));
+
+        List<PostListResponseDto> dtoList = page.getContent()
                 .stream()
                 .map(PostListResponseDto::new)
                 .collect(Collectors.toList());
+
+        return PageResponseDto.<PostListResponseDto>builder()
+                .data(dtoList)
+                .hasNext(page.hasNext())
+                .hasPrevious(page.hasPrevious())
+                .build();
     }
 
     @Transactional(readOnly = true)
