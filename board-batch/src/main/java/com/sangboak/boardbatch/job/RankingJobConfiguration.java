@@ -1,20 +1,23 @@
 package com.sangboak.boardbatch.job;
 
-import com.sangboak.core.entity.Account;
-import com.sangboak.core.repository.AccountRepository;
+import com.sangboak.boardbatch.dto.ScoreDto;
+import com.sangboak.core.entity.Ranking;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.support.ListItemReader;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
+import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
-import java.util.List;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 
 @Log
 @RequiredArgsConstructor
@@ -22,44 +25,86 @@ import java.util.List;
 public class RankingJobConfiguration {
     final private JobBuilderFactory jobBuilderFactory;
     final private StepBuilderFactory stepBuilderFactory;
-    final private AccountRepository accountRepository;
+    final private EntityManagerFactory entityManagerFactory;
+    final private DataSource dataSource;
 
     @Bean
     public Job calculateRanking() {
-        log.info("********** This is calculateRankingJob");
-        return jobBuilderFactory.get("calculateRankingJob")  // 1_1
-                .preventRestart()  // 1_2
-                .start(calculateRankingJobStep())  // 1_3
-                .build();  // 1_4
+        return jobBuilderFactory.get("calculateRankingJob")
+                .start(calculateRankingScoreStep())
+                .next(calculateRankStep())
+                .build();
     }
 
     @Bean
-    public Step calculateRankingJobStep() {
-        log.info("********** This is calculateRankingJobStep");
-        return stepBuilderFactory.get("calculateRankingJobStep")  // 2_1
-                .<Account, Account> chunk(10)  // 2_2
-                .reader(accountReader())  // 2_3
-                .processor(scoreCalculator())  // 2_4
-                .writer()  // 2_5
-                .build();  // 2_6
+    public Step calculateRankingScoreStep() {
+        return stepBuilderFactory.get("calculateRankingScoreStep")
+                .<ScoreDto, ScoreDto> chunk(10)
+                .reader(scoreReader())
+                .writer(scoreWriter())
+                .build();
     }
 
     @Bean
-    @StepScope  // 1
-    public ListItemReader<Account> accountReader() {
-        log.info("********** This is accountReader");
-        List<Account> accounts = accountRepository.findAll();
-        log.info("          - activeMember SIZE : " + accounts.size());  // 2
-        return new ListItemReader<>(accounts);  // 3
+    public Step calculateRankStep() {
+        return stepBuilderFactory.get("calculateRankStep")
+                .<Ranking, Ranking> chunk(10)
+                .reader(rankingReader())
+                .writer(rankingWriter())
+                .build();
     }
 
-    public ItemProcessor<Account, Account> scoreCalculator() {
-        return new ItemProcessor<Account, Account>() {  // 1
-            @Override
-            public Account process(Account account) throws Exception {
-                log.info("********** This is unPaidMemberProcessor");
-                return account.setStatusByUnPaid();  // 2
-            }
-        };
+    @Bean
+    public ItemReader<ScoreDto> scoreReader() {
+        String sql =
+                        "SELECT DISTINCT\n" +
+                        "   account.id as id,\n" +
+                        "   (SELECT COUNT(*) * 10 FROM posts ps WHERE ps.deleted = 0 AND ps.author_id = account.id) AS post_score,\n" +
+                        "   (SELECT COUNT(*) * 5 FROM replies r WHERE r.deleted = 0 AND r.author_id = account.id) AS reply_score,\n" +
+                        "   (SELECT post_score) + (SELECT reply_score) as score\n" +
+                        "FROM accounts account\n" +
+                        "   INNER JOIN posts ps_ ON ps_.author_id = account.id \n" +
+                        "   INNER JOIN boards bs_ ON ps_.board_id = bs_.id";
+
+        return new JdbcCursorItemReaderBuilder<ScoreDto>()
+                .name("cursorItemReader")
+                .dataSource(dataSource)
+                .sql(sql)
+                .rowMapper(new BeanPropertyRowMapper<>(ScoreDto.class))
+                .build();
+    }
+
+    @Bean
+    public JdbcBatchItemWriter<ScoreDto> scoreWriter() {
+        return new JdbcBatchItemWriterBuilder<ScoreDto>()
+                .dataSource(dataSource)
+                .sql("insert into rankings(id, score) values (:id, :score) " +
+                        "ON DUPLICATE KEY UPDATE score = :score")
+                .beanMapped()
+                .build();
+    }
+
+    @Bean
+    public ItemReader<Ranking> rankingReader() {
+        String sql =
+                "SELECT id, score, @rank := @rank + 1 rank\n" +
+                "FROM rankings, (SELECT @rank := 0) init\n" +
+                "ORDER BY score DESC";
+
+        return new JdbcCursorItemReaderBuilder<Ranking>()
+                .name("cursorItemReader")
+                .dataSource(dataSource)
+                .sql(sql)
+                .rowMapper(new BeanPropertyRowMapper<>(Ranking.class))
+                .build();
+    }
+
+    @Bean
+    public JdbcBatchItemWriter<Ranking> rankingWriter() {
+        return new JdbcBatchItemWriterBuilder<Ranking>()
+                .dataSource(dataSource)
+                .sql("update rankings set rank = :rank where id = :id")
+                .beanMapped()
+                .build();
     }
 }

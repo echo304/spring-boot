@@ -2,11 +2,13 @@ package com.sangboak.core.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity(name = "rankings")
 public class Ranking {
 
