@@ -35,7 +35,7 @@ public class Account extends BaseTimeEntity {
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private Set<Post> posts = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
@@ -50,7 +50,7 @@ public class Account extends BaseTimeEntity {
     @Formula("(select count(*) from replies r where r.deleted = false and r.author_id = id)")
     private int totalReplyCount;
 
-    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id")
     private Ranking ranking;
 

@@ -37,7 +37,7 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(nullable = false)
     private Board board;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private Set<Reply> replies = new HashSet<Reply>();
 
     @Column(columnDefinition = "boolean default false")

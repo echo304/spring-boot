@@ -17,7 +17,7 @@ subprojects {
 
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'java'
+    apply plugin: 'java-library'
 
     sourceCompatibility = '11'
 
@@ -54,18 +54,18 @@ subprojects {
 
 project(':web-app') {
     dependencies {
-        implementation  project(':core')
+        implementation project(':core')
     }
 }
 
 project(':admin-app') {
     dependencies {
-        implementation  project(':core')
+        implementation project(':core')
     }
 }
 
 project(':board-batch') {
     dependencies {
-        implementation  project(':core')
+        implementation project(':core')
     }
 }

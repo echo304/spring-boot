@@ -35,7 +35,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PageResponseDto<PostListResponseDto> getPostsByBoardId(Long boardId, Integer pageNum) {
-        Page<Post> page = postRepository.findAll(PageRequest.of(
+        Page<Post> page = postRepository.findByBoardId(boardId, PageRequest.of(
                 pageNum - 1, POST_PER_PAGE,
                 Sort.by(Sort.Direction.DESC, "createdDate")));
 

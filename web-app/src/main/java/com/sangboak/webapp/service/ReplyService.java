@@ -9,6 +9,7 @@ import com.sangboak.core.repository.ReplyRepository;
 import com.sangboak.webapp.dto.ReplyResponseDto;
 import com.sangboak.webapp.dto.ReplySaveRequestDto;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,7 @@ public class ReplyService {
     }
 
     @Transactional
+    @PostAuthorize("returnObject.authorEmail == authentication.name")
     public ReplyResponseDto updateReply(Long id, ReplySaveRequestDto dto) {
         Reply reply = replyRepository.findById(id).orElseThrow();
         reply.setContent(dto.getContent());

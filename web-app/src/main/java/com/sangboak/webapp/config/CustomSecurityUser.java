@@ -23,6 +23,10 @@ public class CustomSecurityUser extends User {
         this.account = account;
     }
 
+    public Long getId() {
+        return account.getId();
+    }
+
     private static List<GrantedAuthority> makeGrantedAuth(Set<Role> roles) {
         List<GrantedAuthority> list = new ArrayList<>();
         roles.forEach(
